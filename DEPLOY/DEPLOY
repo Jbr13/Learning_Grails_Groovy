@@ -1,0 +1,46 @@
+-----------------------------------------------------------------------------------------------------------------------------
+                                                          TomCat
+-----------------------------------------------------------------------------------------------------------------------------
+
+Tomcat é um conteiner de Servlets que é usada na implementação das technologias Java Servlets e Java Server Pages(JSP). As especificações de JSP/Servlets são desenvolvidos e mantidos pela Sun auxiliada pela JCP(Java Community Process) . Tomcat é desenvolvido como um projeto aberto e participativo e é liberado sobre a Apache Software License .
+
+Servlets são classes Java, desenvolvidas de acordo com uma estrutura bem definida que quando instaladas e configuradas em um Servidor que implemente um Servlet Container, podem tratar requisições recebidas de clientes Web, como por exemplo os Browsers (Internet Explorer® e Mozilla Firefox®).
+
+Ao receber uma requisição, um Servlet pode capturar os parâmetros desta requisição, efetuar qualquer processamento inerente a uma classe Java, e devolver uma página HTML.
+
+// Se sua aplicação já é baseada na versão 1.2 do Grails não é necessário instalar novamente o plugin do tomcat. Caso contrário, executar o comando:
+
+$ grails install-plugin tomcat
+
+// Este recurso só funciona para as versões 1.1 ou posteriores do framework.
+
+// Para realizar o deploy da aplicação gerando o .war:
+
+$ grails tomcat deploy
+
+// Caso já exista uma aplicação com mesmo nome no seu servidor, o deploy será mal sucedido. Nestes casos, você terá de efetuar o undeploy para em seguida executar o deploy novamente. 
+
+$ grails tomcat undeploy
+
+-----------------------------------------------------------------------------------------------------------------------------
+                                                        .WAR
+-----------------------------------------------------------------------------------------------------------------------------
+
+// Gerar .war, o mesmo será salvo em build/libs 
+
+$ grails war
+
+https://medium.com/@pra4mesh/deploy-war-in-docker-tomcat-container-b52a3baea448
+
+-----------------------------------------------------------------------------------------------------------------------------
+                                                     SHELLSCRIPT
+-----------------------------------------------------------------------------------------------------------------------------
+
+ShellScript para deploy da aplicação:
+
+# !/bin/bash
+sudo service mysqld stop
+./$TOMCAT_PRODUCAO/bin/shutdown.sh
+sudo rm -rf * $TOMCAT_PRODUCAO/webapps
+sudo cp $MEU_APP $TOMCAT_PRODUCAO/webapps
+./$TOMCAT_PRODUCAO/bin/startup.sh

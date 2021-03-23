@@ -1,0 +1,976 @@
+-----------------------------------------------------------------------------------------------------------------------------------
+							  							  Grails
+-----------------------------------------------------------------------------------------------------------------------------------
+
+    Baseado na Arquitetura MVC (MVC é nada mais que um padrão de arquitetura de software, separando sua aplicação em 3 camadas. A
+    camada de interação do usuário (view), a camada de manipulação dos dados(model) e a camada de controle(controller)) é um
+    framework web baseado em MVC que utiliza a linguagem Groovy, roda sobre a JVM e visa a alta produtividade. Ele combina os
+    principais frameworks utilizados na plataforma Java e respeita o “paradigma” Convention-over-configuration (Programação por
+    convenção).
+
+    Convention Over Configuration (Programação por convenção)
+    O CoC é um paradigma que visa diminuir a quantidade de decisões que o desenvolvedor precisa tomar, tomando como “padrão” algo
+    que é comumente usado, uma convenção. Se o padrão escolhido pelo framework for a configuração que o desenvolvedor precisar, este
+    não gasta tempo tendo que altera-la, entretanto, se ele necessitar de algo diferente, ele fica livre para configurar da forma
+    que desejar. No caso do Grails ele assume diversas configurações como por exemplo as de banco de dados, as de log de erro
+    entre outras.
+
+    - MVC
+    Model View Controller, é um padrão utilizado no desenvolvimento de software que visa separar a parte lógica, a parte de
+    persistência de dados e a parte de visualização do sistema.
+
+    1. Domain:
+
+        Irá conter os atributos da classe.
+        Restrições
+
+    2. Controller:
+
+        Irá controlar as requisições que serão feitas para interface para aplicação. É aqui que iremos declarar nossa parte
+        lógica da aplicação (métodos)
+
+        Estrutura
+
+            package projeto_crud_course
+
+            class StudentController {
+
+            def index() { }
+            Proucura arquivo index na controller estudante
+
+            }
+
+    3. Views
+
+        Irá conter as paginas visuais de nossa aplicação, que serão estruturadas em GSP (Groovy Server Page)
+
+
+    - Plugins
+
+    	Hibernate {
+
+    		Framework de persistência:
+
+    			Realiza o mapeamento entre os objetos do nosso software tornando-os relacional. (Ao meu entender cria as
+    			relações das classes no BD)
+    	}
+
+    	Scaffolding {
+
+    		Exclusivo do framework grails:
+
+    			Gera códigos automaticamente (CRUD)
+
+    				- Tela
+    				- Banco de dados
+
+    	}
+
+    	Database-migration
+        ?
+
+    	Tomcat
+    	?
+
+
+    - Pastas do projeto
+
+        grails-app {
+
+            conf
+                É onde fica as configurações da aplicação, como a configuração de banco de dados "DataSource.groovy",
+                "bootstrap.groovy" onde podem ser feitas as configurações de inicialização entre outros.
+
+            BuildConfig.groovy
+                Todas configs que precedem a execução/compilação do projeto (runtime 'mysql')
+
+            Bootstrap.groovy
+                Sempre que a apliação inciar irá rodar o que estiver definido na chave init, quando for
+                encerrada/destruida irá executar o que estiver dentro de destroy.
+
+            AplicationResources.groovy
+                Configurações dos recursos, onde definimos recursos (JS, CSS, ETC(De uma maneira global))
+
+            Config
+                Configurações especificas da aplicação e também de plugins que temos instalado em nossa aplicação
+
+            DataSource.groovy
+                Configurar acesso ao Banco de dados
+
+            config.groovy
+                várias configurações da aplicação como ambientes de execução;
+
+            URLMappings.groovy
+                alterar como as requisições são tratadas através de URLs.
+
+            controllers
+                É responsável pela lógica das regras de negócios... É onde fica o C do MVC, os controladores, são responsável
+                pela integração entre as camadas de visão e Modelo.
+
+            domain
+                Aqui encontra-se o M do MVC, onde fica as classes de Domínio, ou modelos. É responsável pela organização dos
+                dados e pelas regras do negócio (Onde é declarado os atributos)
+
+            i18n
+                Recursos para internacionalização e mensagens de erro. Traduções e/ou customização de mensagens
+
+            services
+                Aqui ficariam as classes utilizadas na camada de serviços do Grails, se você for utilizá-la. (Serviços
+                para realizar comunicação / integração com outros sistemas)
+
+            taglib
+                Aqui ficam as TagLibs criadas pelo usuário (tags, comportamentos criados pelo usuário)
+
+            views
+                É o V do MVC, as Views. Aqui ficam os templates e os arquivos “.gsp”, Groovy Server Pages
+                utilizada para cada classe de domínio. É responsável pela apresentação e visualização dos dados
+
+        }
+
+        layouts
+            Aqui ficam os templates, templates em Grails são views incluídas em outras views. Por padrao
+            iniciam com "_", exemplo: _exemploTemplate
+
+        grails-tests
+            Aqui ficam os testes unitários
+
+        lib
+            Aqui ficam as libs externas, como por exemplo os drivers de conexão aos bancos de dados
+
+        src
+
+        groovy
+            Aqui ficam outros códigos em groovy que não se encaixam nem em Domain, Controller View ou Service.
+
+        java
+            Idem ao de cima, porém para Java.
+
+        web-app
+            Gerênciar recursos (CSS, IMAGES, JS)
+
+        css
+            Folhas de estilo
+
+        images
+            Imagens
+
+        js
+            JavaScript
+
+        WEB-INF
+            Arquivos relacionados ao deploy
+
+        index.jsp
+            O Index da app
+
+        Migrations
+            Pesquisar o que é
+
+        Target
+            Onde fica as classes copiladas
+
+        - Banco de dados
+
+            O grails por padrão, ao nomear as tabelas do banco de dados,se não definido um nome o mesmo irá
+            utilizar da convenção por nomenclatura, ou seja, o nome exemploBancoDeDados, ficaria
+            exemplo_banco_de_dados.
+
+            GORM
+
+                GORM é um componente do Grails para implementar o ORM – Mapeamento Objeto Relacional;
+                O GORM que cuida da parte do mapeamento	das classes -domains- para se tornarem tabelas;
+                - As classes de domínio são tabelas;
+                - Os atributos os campos;
+
+                Alem disso, quando utilizamos herança o gorms utiliza por padrao uma estrategia que chama
+                tabela por hierarquia, onde teremos 1 unica tabela que ira conter os atributos das outras tabelas.
+                um ponto de atençao e que no BD quando dermos um "desc" na tabela PAI, veremos que existe um atributo
+                chamado "class" e nele ira estar armazenado as classes que sao filhas dessa classe PAI e os atributos delas.
+                Uma grande desvantagem dessa estrategia e o tamanho que a tabela PAI ira ficar conforme o projeto
+                gor crescendo.
+
+
+                Outra estrategia que o GORM utiliza e "tabela por subclasse", onde teremos 1 tabela para cada classe/subclasse
+
+
+
+    - Bibliotecas {
+
+        - File IO: https://www.tutorialspoint.com/groovy/groovy_file_io.htm
+
+        // Utilizada para ler e escrever arquivos em groovy
+
+            Reading Files:
+            class Example {
+            static void main(String[] args) {
+                File file = new File("E:/Example.txt")
+                println file.text
+                }
+            }
+
+            Write Files
+            import java.io.File
+            class Example {
+            static void main(String[] args) {
+                new File('E:/','Example.txt').withWriter('utf-8') {
+                    writer -> writer.writeLine 'Hello World'
+                    }
+                }
+            }
+
+    - Comandos grails
+
+    	$ grails create-app
+    		Criar todos os arquivos e diretórios que serão utilizados na aplicação.
+    		Irá pedir o nome da aplicação.
+
+    	$ grails create-domain-class <Nome da domain class>:
+    		Irá criar uma classe de domínio (Model) com o nome especificado, essa classe poderá ser encontrada
+    		em: grails-app/domain/listatarefas/Tarefa.groovy
+
+    	$ grails create-controller	// gerar um Controller (convenção: nomeescolhidoController)
+
+    	$ grails create-view
+    		Gera uma view com nome especificado posteriormente
+
+    	$ grails run-app
+    		Rodar aplicação
+
+    	$ grails stop-app
+    		Parar aplicação
+
+        $ grails generate-all <nomepacote.nomedaclasse> <Nome da domain class>	// Gerar controller e view da classe de
+            domínio especificada (para gerar de todas as classes colocar * (grails generate-all *))
+
+        $ grails prod run-app
+            Irá executar a aplicação em modo de Produção, salvando as alterações em BD
+
+            $ grails -Dserver.port=8081 run-app
+
+            em um endpoint especifico
+            $ run-app -Dgrails.server.servlet.context-path=/helloworld
+
+            em uma porta especifica
+            $ grails run-app -port=8090
+
+            em modo debug
+            $ grails run-app --debug-jvm
+
+    - Exemplos:
+
+        Workflow adicionando uma funcionalidade
+
+    	1. Na VIEW:
+    		Definir botão, link, etc, adicionar qual ação chama e o que atualizar, se atualizar, e caso for um update
+    		será necessário passar um id, ou vários...
+    	2. No controller:
+    		Definir método, função, renderização
+
+    - A figura a seguir demonstra como as camadas do MVC interagem entre si:
+      https://vaidegrails.files.wordpress.com/2015/06/atuacao_das_camadas_mvc.png
+
+-----------------------------------------------------------------------------------------------------------------------------------
+							   				 Groovy
+-----------------------------------------------------------------------------------------------------------------------------------
+
+    - Validações (Constraints)
+
+        blank: true|false
+            Campo pode estar em branco
+        nullable: true|false
+        	Campo pode estar null
+        creditCard: true|false
+            Campo terá validação de cartão de credito
+        email: true|false
+            Campo terá validação de email
+        display: true|false
+            Campo estará visível na tela
+        password: true|false
+            Campo será do tipo senha
+        inList: ["valorDesejado", "valorDesejado", "valorDesejado"]
+            Definir restrição de valores em lista
+        unique: true;
+            Unico no sistema
+        size: 6..10
+            Define a quantidade de caracteres minima e máxima
+
+	Listas
+        // Join List
+        def abc = ['a', 'b', 'c']
+        assert 'abc' == abc.join()
+        assert 'a::b::c' == abc.join('::')
+
+    Criteria
+        Grails nos oferece três ferramentas para que possamos fazer consultas em um banco de dados: finders dinâmicos, HQL
+        (Hibernate Query Language) e criterias. A busca por critérios do Grails é na realidade uma abstração do mesmo recurso
+        oferecido pelo Hibernate. A diferença é que temos aqui uma versão mais “groovy”, uma DSL baseada nos builders do Groovy.
+
+        O Básico
+        Toda classe de domínio do Grails possui injetada a função createCriteria, que retorna um objeto do tipo
+        grails.gorm.HibernateCriteriaBuilder. Esta classe, por sua vez, possui uma função que será usada em 99% dos
+        casos: a função list.
+
+        O que é uma criteria?
+        Grails nos oferece três ferramentas para que possamos fazer consultas em um banco de dados: finders dinâmicos, HQL (Hibernate
+        Query Language) e criterias. A busca por critérios do Grails é na realidade uma abstração do mesmo recurso oferecido pelo Hibernate.
+        A diferença é que temos aqui uma versão mais “groovy”, uma DSL baseada nos builders do Groovy.
+
+        Por que usar criterias se já tenho os lindos finders dinâmicos?
+        Os finders dinâmicos são feitos para consultas simples que envolvam algo entre uma e três condições no máximo (minha opinião).
+        Se for necessário buscar os registros levando como base o atributo de um atributo composto da sua classe, esqueça os
+        finders dinâmicos.
+
+        Toda classe de domínio do Grails possui injetada a função createCriteria, que retorna um objeto do tipo
+        grails.gorm.HibernateCriteriaBuilder. Esta classe, por sua vez, possui uma função que será usada em 99%
+        dos casos: a função list.
+
+    Mapas
+        Map testandoMapas = [:]
+
+        testandoMapas = [
+            '(CF) Código de rede': "",
+            '(CF) XPTO': "",
+            '(CF) NF compra': "",
+            serviceOrderCode: "",
+            notes: "",
+            informedDefectCode: ""
+        ]
+
+        println "Antes de adicionar valores"
+        println testandoMapas
+        println "\n"
+
+        /* Adicionando / atualizando valores (Mesmo jeito)*/
+
+        testandoMapas['(CF) Código de rede'] = "testeCódigoDeRedes"
+        testandoMapas.put('(CF) XPTO', "Outro teste adicionando valores ao mapa")
+        testandoMapas.weight = 500
+        testandoMapas.'(CF) NF compra' = 'teste NF compra'
+        testandoMapas << [notes: "Bem observado"]
+
+        println "Após adicionar valores"
+        println testandoMapas
+        println "\n"
+
+        /* Removendo chaves e valores */
+
+        testandoMapas.remove('(CF) Código de rede')
+        testandoMapas -= ['(CF) XPTO':'Outro teste adicionando valores ao mapa']
+
+        println "Após remover determinadas chaves e valores"
+        println testandoMapas
+        println "\n"
+
+        /* Recuperando valores do mapa */
+
+        println "Recuperando valores do mapas"
+
+        println "(CF) Código de rede: ${testandoMapas.get('(CF) Código de rede')}"
+        println "(CF) XPTO: ${testandoMapas['(CF) XPTO']}"
+        println "(CF) NF compra: ${testandoMapas.'(CF) NF compra'}"
+        println "serviceOrderCode: ${testandoMapas.serviceOrderCode}"
+        println "notes: ${testandoMapas.notes}"
+        println "informedDefectCode: ${testandoMapas.informedDefectCode}"
+
+        println "\n"
+
+        /* Coletando entradas */
+
+        // Podemos criar umm mapa apartir de uma lista
+
+        List listaDeFrutas = ["maça", "banana", "uva"]
+        Map mapaDeFrutas = listaDeFrutas.collectEntries{[(it):it]}
+
+        println "Mapa de frutas coletadas apartir de uma lista"
+        println mapaDeFrutas
+        println "\n"
+
+        // Verificando quantos elementos atingem determinada condição
+
+        def verificandoQuantosElementosAtingemACondicaoAtravesDeUmMapa = mapaDeFrutas.count {key, value ->
+            value > 4
+        }
+
+        println verificandoQuantosElementosAtingemACondicaoAtravesDeUmMapa
+        println "\n"
+
+        // Unindo mapas
+
+        def map1 = [p1:100, p2:200]
+        def map2 = [p3:300, p4:400]
+        def map3 = map1 + map2
+        println "${map3}"
+        println "\n"
+
+        // Interseção de mapas (Onde os elementos se conectam (Elementos iguais, chave e valor))
+
+        def map4 = [p1:100, p2:200, p3:300, p4:400, p5:500]
+        def map5 = [p4:400, p5:500, p6:600, p7:700]
+        def map6 = map1.intersect(map2)
+        println "${map3}"
+        println "\n"
+
+
+        // Recuperando todas chaves do mapa como uma lista
+
+        def map7 = [p1:100, p2:200, p3:300, p4:400, p5:500]
+        println "${map1.keySet()}"
+        println "\n"
+
+        // Recuperando todos valores do mapa como uma lista
+
+        def map8 = [p1:100, p2:200, p3:300, p4:400, p5:500]
+        println "${map1.values()}"
+        println "\n"
+
+        // Pegando as menores entradas do mapa (Numérico)
+        def map9 = [p56:1010, p12:2100, p23:3100, p43:4100, p54:5010]
+
+        println "${map1.min {it.key}}"
+        println "${map1.min {it.value}}"
+        println "\n"
+
+        // Pegando as maiores entradas do mapa (Numérico)
+
+        def map10 = [p1:100, p2:200, p3:300, p4:400, p5:500]
+        println "${map1.max {it.key}}"
+        println "${map1.max {it.value}}"
+
+        // Retornarnando apenas chaves que começam com determinada string
+
+        List camposCustomizados = [
+            "(CF) Código de rede",
+            "serviceOrderCode",
+            "(CF) XPTO",
+            "(CF) NF compra",
+            "serviceOrderCode",
+            "notes",
+            "informedDefectCode"
+        ]
+
+        Map mapCamposCustomizados = camposCustomizados.collectEntries { [(it): it] }
+
+        def camposCustomizadosDoMapa = mapCamposCustomizados.keySet().findAll { it.startsWith('(CF) ') }
+
+        println camposCustomizadosDoMapa
+
+    - GSP (https://gsp.grails.org/latest/guide/index.html)
+
+        <g:render template="list" model="users: user"></g:render>
+            Onde o template sera o template que deseja renderizar e o model e a definiçao da variavel e de onde ela recebe
+            valor que no caso ela ira receber do template list e de uma variavel do tipo lista nomeada de "user"
+
+    	loop no gsp:
+
+    		<g:each var="student" in="${Student}">
+
+    		....
+
+    		</g:each>
+
+    	<g:formRemote name="" url="[controller: 'produto', action: 'salvar']" update="divMensagem" onSuccess="carregarLista()">
+    		Chamando a controller produto o metodo salvar, atualizar a divMensagem e no sucesso chamar o metodo. Trata-se de um formulário do grails.
+
+    	<g:remoteLink controller="student" action="add" update="divForm">Add</g:remoteLink>
+    		Chama a açao de um controller
+    	e executa uma ação, posteriormente atualiza algo
+
+    	<g:remoteFunction controller="student" action="delete" update="divLista"/>
+    		Chama uma ação de um controller, executa
+    	uma ação e atualizada a div.
+
+    	<g:set var="x" value="${100}"/>
+    		Definir váriavel e atribuir valor a mesma.
+
+
+    - Keywords
+
+        as 	assert 	 break 	 case
+        catch 	class 	 const 	 continue
+        def 	default 	 do 	 else
+        enum 	extends 	 false 	 Finally
+        for 	goto 	 if 	 implements
+        import 	in 	 instanceof 	 interface
+        new 	pull 	 package 	 return
+        super 	switch 	 this 	 throw
+        throws 	trait 	 true 	 try
+        while
+
+    - Data Types
+    	byte − This is used to represent a byte value. An example is 2.
+    	short − This is used to represent a short number. An example is 10.
+    	int − This is used to represent whole numbers. An example is 1234.
+    	long − This is used to represent a long number. An example is 10000090.
+    	float − This is used to represent 32-bit floating point numbers. An example is 12.34.
+    	double − This is used to represent 64-bit floating point numbers which are longer decimal number representations which may be required at times. An example is 	  	  12.3456565.
+    	char − This defines a single character literal. An example is ‘a’.
+    	Boolean − This represents a Boolean value which can either be true or false.
+    	String − These are text literals which are represented in the form of chain of characters. For example “Hello World”.
+
+
+    - Assignment operators
+        += 	This adds right operand to the left operand and assigns the result to left operand.
+        def A = 5
+
+        A+=3
+
+        Output will be 8
+
+        ----------
+
+        -= 	This subtracts right operand from the left operand and assigns the result to left operand
+
+        def A = 5
+
+        A-=3
+
+        Output will be 2
+
+        ----------
+
+        *= 	This multiplies right operand with the left operand and assigns the result to left operand
+
+        def A = 5
+
+        A*=3
+
+        Output will be 15
+
+        ----------
+
+        /= 	This divides left operand with the right operand and assigns the result to left operand
+
+        def A = 6
+
+        A/=3
+
+        Output will be 2
+
+        ----------
+
+        %= 	This takes modulus using two operands and assigns the result to left operand
+
+        def A = 5
+
+        A%=3
+
+        Output will be 2
+
+        -- Range Operators
+        def range = 5..10;
+        println(range);
+        println(range.get(2));
+
+        Output will be [5, 6, 7, 8, 9, 10], 7
+
+        Operator Precedence
+        1. ++ -- + -
+        pre increment/decrement, unary plus, unary minus
+
+        2. * / %
+        multiply, div, modulo
+
+        3. + -
+        addition, subtraction
+
+        4. == != <=>
+        equals, not equals, compare to
+
+        5. &
+        binary/bitwise and
+
+        6. ^
+        binary/bitwise xor
+
+        7. |
+        binary/bitwise or
+
+        8. &&
+        logical and
+
+        9. ||
+        logical or
+
+        10. = **= *= /= %= += -= <<= >>= >>>= &= ^= |=
+        Various assignment operators
+
+        - Metodos
+
+            render 'Hello World'
+                Renderizar na tela Hello World
+                render(view:'teste.gsp')
+                    Renderizar uma view GSP
+
+            render 'Hello World'
+                Renderizar na tela Hello World
+            render(view:'teste.gsp')	// Renderizar uma view GSP
+
+            def number = System.in.newReader().readLine()
+                Ler valor usuário onde 'System.in' representa a entrada padrão
+
+            charAt
+                Retorna o valor do caractere no índice especificado. Um índice varia de zero a length () - 1.
+            O primeiro valor de caractere da sequência está no índice zero, o próximo no índice um e assim por diante,
+            como na indexação de matriz.
+
+            mapping
+                Utilizado para mapear as tabelas do banco de dados (É necessário quando já existem tabelas e você quer adequar seu projeto as mesmas)
+
+                static mapping = {
+                    table: name: "cli_cliente"
+                }
+
+                    discriminator
+                    descrimina o atributo de uma tabela quando a mesma esta sendo estendida
+                    tablePerHierarchy
+                    Diz se a tabela será definida por hierarquia quando a mesma esta sendo estendida
+
+                    nomeAtibuto joinTable:[name:"preferencias_clientes", key: "id_cliente", column: "id_produto"]
+                    // Dizemos que e uma tabela de junçao, onde iremos ter uma tabela chamada "preferencias_clientes",
+                    com uma chave chamada "id_cliente" e a coluna referente ao atributo em questao ira chamar "id_produto"
+
+                    tablePerHierarchy: true/false
+                    Definir se o BD ira seguir a estrategia de 1 tabelas por hierarquia ou 1 tabela por classe (Preferivel tabela por classe)....
+
+                }
+
+            hasOne
+                Indica que a classe de dominío em questão terá um atributo com relacionamento 1 p 1
+
+                static hasOne = [nameCourseEnrolled:Course]
+                1: nome atributo 2: Classe ao qual se referência
+
+            hasMany
+                Indica que a classe de dominío em questão terá um atributo com relacionamento 1 p N
+
+                static hasMany = [nameCourse:Course]
+
+            belongsTo
+                Representa a classe predomiante; Quanto é feito isso em uma classe, tudo que for atualizado / deletado
+                nela irá ter um efeito recursivo, atualizando os demais dependentes
+
+                belongsTo = [Student]
+
+            validator: { valor, objeto ->
+                Criar validação, com base no valor recebido levando em conta o objeto
+                (valor.size() == 1)
+            }
+
+            class Sobremesa extends produtos {
+            ...
+            }
+
+            Obs: Quando a classe for extendida irá remover as tabelas das mesmas que estao estendendo de uma superclasse
+            e irá incluir na tabela da superclasse as tabelas removidas por hierarquia, deixando as mesmas implicitas]
+
+
+            Check if String is a Number
+                assert '42'.isNumber()
+                assert '42'.isInteger() && '42'.isLong() && '42'.isBigInteger()
+                assert '42.42'.isDouble() && /42.42/.isBigDecimal() && '42.42'.isFloat()
+
+
+        -- Enum
+
+            Enum, foi introduzida para representar um conjunto fixo de constantes.
+
+            Exemplo
+
+                enum MyColors{
+                  BLUE, RED, WHITE
+                }
+                println MyColors.values()
+
+                Output:
+                [BLUE, RED, WHITE]
+
+                Enuns podem conter propriedades
+
+                enum MyCoin{
+
+                    PENNY(1), NICKEL(5), DIME(10), QUARTER(25)
+
+                    MyCoin(int value) {
+                        this.centValue = value
+                    }
+
+                    private final int centValue
+
+                    int getCentValue() {
+                        centValue
+                    }
+
+                    public String toString() {
+                        return name() + " = " + centValue
+                    }
+
+                }
+
+                println MyCoin.values()
+
+                Output:
+
+                [PENNY = 1, NICKEL = 5, DIME = 10, QUARTER = 25]
+
+        -- Associação
+
+            Um para Um em Grails
+                Quando temos uma associaçao 1 p 1, basta definirmos essa associaçao na classe de dominio informando o tipo e o nome da variavel
+                referente ao objeto que deseja criar associaçao, exemplo:
+
+                1 produto possui 1 estoque, 1 estoque e de 1 produto
+
+                class Produtos {
+                    Estoque estoque
+                }
+
+                class Estoque {
+                    Produtos produtos
+                }
+
+                Aqui temos uma associaçao 1 p 1
+
+                Podemos tambem utilizar o hasOne, porem dessa forma a chave estrangeira fica somente na classe filha:
+
+                    static hasOne = [nose: Nose]
+
+            Um para muitos
+                Quando temos uma associaçao 1 p n, utilizamos o hasMany, dizendo que 1 objeto possui varios de outro objetos definido no hasMany
+
+                1 Cliente pode fazer muitos pedidos, 1 pedido pertence a 1 cliente
+
+                Classe Pedidos
+                    static hasMany = [pedidos: Pedido]
+
+                Classe Cliente
+                    Cliente cliente
+
+            Muitos para muitos
+                Quando temos uma associaçao muito para muitos, geralmente criamos uma classe intermediadora entre as classes principais, isso pois
+                teremos carcteristicas/atributos nessa classe que fazem referencia a essa associaçao, exemplo:
+
+                1 Produto pode estar em varios pedidos, 1 pedido pode ter varios produtos
+
+                Sendo assim, teremos a classe Pedido e Produtos, alem dela teremos a 3 classe intermediadora itemPedido, que ira
+                contem a quantidade de determinado item pedido, valor de venda e a observaçao, por exemplo...
+
+                Sendo asssim, teriamos:
+
+                Produto {
+
+                    static hasMany = [itensPedidos: ItemPedido]
+
+                }
+
+                ItemPedido {
+
+                    Double valorPedido;
+                    Integer quantidadePedido
+                    Produto produto
+                    Pedido pedido
+
+
+                }
+
+                Pedido {
+
+                    static hasMany = [itensPedidos: ItemPedido]
+
+                }
+
+                No cenario onde a relaçao nao ira gerar atributos, uma terceira classe nao sera necessaria, sendo assim utilizamos o hasMany
+
+                1 Cliente prefere muitos produtos e 1 produto pode ser de preferencia de muitos clientes
+
+                Cliente {
+
+                    static hasMany = [produtosPreferidos: Produto]
+
+                }
+
+                Produto {
+
+                    static hasMany = [preferidoPeloCliente: Cliente]
+
+                    // Adicionaremos tambem a classe mais "importante" / PAI
+                    static belongsTo = [Cliente]
+
+                }
+
+
+            Obs:
+                Por utilizarmos o framework Hibernate (Persistencia de dados), o mesmo faz um mapeamento dos objetos relacionando os mesmos, sendo
+                assim nao precisamos criar as relaçoes do banco de dados.
+                Apartir do momento que criamos nossas domains classes o hibernate ja cria a tabela no banco de dados referente a mesma
+                Quando utilizamos o hasMany, automaticamente o atributo que definirmos no mesmo, sera uma lista
+                Quando temos um relacionamento Muitos para muitos (n x n) somos obrigados a definir qual lado e mais "importante", utilizadno o
+                belongsTo = [], que diz que o objeto "pertence a", aqui definiremos a classe de maior precedencia, assim, quando excluirmos um objeto
+                do tipo do "Pai" os filhos serao excluidos tambem em um efeito cascata...
+
+
+        -- CRUD basico com AJAX
+
+
+            Para esse cenario temos nossa classe User
+
+            class User {
+
+                String username
+                String password
+                String email
+                String cpf
+
+                Profile profile
+
+                static constraints = {
+
+                    username nullable: false, blank: false
+                    password nullable: false, blank: false
+                    profile nullable: false, blank: false, size: 1..10
+                    email nullable: true, blank: true, email: true, unique: true
+
+                    cpf validator: { value, obj ->
+
+                        if (value.length() > 11) {
+                            errors.rejectValue('cpf', 'user.validation.cpf')
+                        }
+
+                    }
+
+                }
+
+            }
+
+            Para a mesma, iremos criar uma controller
+
+            $ grails create-controller User
+
+            Assim, teremos uma controller que por sua vez ira chamar o arquivo index.gsp
+
+            Entao, iremos criar esse arquivo dentro da pasta "views, user"
+
+            Apos criada iremos definir a estrutura gsp utilizando HTML E CSS que ira ficar
+
+            <!doctype html>
+            <html>
+            <head>
+                <meta name="layout" content="main"/>
+                <title>User</title>
+            </head>
+            <body>
+
+                <a href="#">Adicionar</a>
+
+                <div id="divLista"></div>
+                <div id="divForm"></div>
+
+            </body>
+            </html>
+
+            Apos isso, iremos criar nossas gsp _form e _list onde cada uma delas ira receber
+
+            list.gsp {
+
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <th>Nome de usuario</th>
+                    <th>Email</th>
+                    <th>Perfil</th>
+                </tr>
+                <g:each var="user" in="${user}">
+                    <tr>
+                        <td>${user.name}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${user.profile.profileName}</td>
+                        <td>
+                            <a href="#">Alterar</a>
+                            <a href="#">Excluir</a>
+                        </td>
+                    </tr>
+
+                </g:each>
+            </table>
+
+            }
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+							                        ETC
+-----------------------------------------------------------------------------------------------------------------------------------
+
+	- gsp
+		Página html com tags especificas que nos dão algumas funcionalidade e comunicação com a controller
+	- AJAX
+		Realiza requisições assincronas ao servidor e pode ter sua resposta nao assincrona
+	- Jquery
+		Biblioteca que facilita manipulação dos elementos da interface e pertmite entre outras coisas
+	fazer requisicoes ajax e manusear js sem se preocupar com o brownser utilizado.
+
+	- Sites úteis
+        https://www.tutorialspoint.com/groovy/groovy_overview.html
+        http://groovy.codehaus.org/
+        https://grails.org/
+
+     - UML
+        Quando temos uma associaçao, sempre devemos ler da direita pra esquerda
+
+
+    - Configs de um projeto grails
+        Como alterar versao grails do seu projeto
+        Botao direito no modulo > Add framework support > Selecione Groovy > Versao groovy desejada
+
+
+
+
+
+
+
+
+
+-- Projeto Mini_WKF
+
+    Grails: 4.0.4
+    Java: 8.0.252-zulu
+
+    Convençao
+        Mensagens:
+            Classe.contexto.mensagem
+
+
+
+    Configurando o projeto Grails para conexão com MySQL
+
+        Se nao exisitr, criar > DataSource.groov {
+
+        Responsavel  pela configuraçao dos ambientes referente a conexao com banco de dados, podemos definir coisas como, o driver
+        que sera utilizado, a engine, o que ira acontecer com os dados do BD quando aplicaçao foi inciada / parada e etc...
+        Nesse arqeuivo iremos configurar a conexao com o BD, na pasta /home/jbr13/GitHub/Projeto_Mini_WKF/Mini_Wkf/grails-app/ETC/exemplo_dataSource.groovy
+        temos um exemplo de um DataSource configurado para mySql.
+
+        }
+
+        Alem disso teremos que configurar o
+
+        build.gradle {
+
+        Adicionaremos a seguinte linha nas dependencies
+
+           dependencies {
+               // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
+
+               runtime 'mysql:mysql-connector-java:5.1.29'
+           }
+
+        }
+
+
+
+
+-- Extras
+
+    OO
+    Herança e um tipo de relacionemnto entre objetos e ele ocorre quandos temos uma relaçao do tipo "é um"
+    Associaçao 1 para 1 "tem um"
